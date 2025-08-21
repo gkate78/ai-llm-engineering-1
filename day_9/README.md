@@ -97,6 +97,30 @@ After running any of the examples, open your browser and navigate to:
 - **Port Conflicts**: If port 8000 is busy, Chainlit will automatically use the next available port
 - **Dependencies**: Run `uv sync` to ensure all required packages are installed
 
+### Common Import Error: "No module named 'langchain_openai'"
+
+**Problem**: You may encounter this error even after running `uv sync`:
+```
+ModuleNotFoundError: No module named 'langchain_openai'
+```
+
+**Cause**: This happens when using the global `chainlit` command instead of the one in your project's virtual environment.
+
+**Solution**: Always use the chainlit executable from within your project's virtual environment:
+
+```bash
+# ❌ Don't use this (global chainlit)
+chainlit run step1_langchain.py
+
+# ✅ Use this instead (project-specific chainlit)
+.venv/bin/chainlit run step1_langchain.py --port 8001
+```
+
+**Why this happens**: 
+- Global `chainlit` (installed via pipx) runs in a different Python environment
+- Project dependencies are installed in `.venv/` via UV
+- The global command can't see your project's installed packages
+
 ## Next Steps
 
 - Customize the prompts in each example for your specific use case
